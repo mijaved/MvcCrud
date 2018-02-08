@@ -1,0 +1,146 @@
+﻿@model MvcCrud.Models.Company
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Company</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @*<input type="submit" value="Create" class="btn btn-default" />*@
+                <button id="saveCompany" type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table id="detailsTable" class="table">
+                <thead>
+                    <tr>
+                        <th>SL#</th>
+                        <th>Employee Name</th>
+                        <th>Position</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            <a class="btn btn-default" onclick="AddEmpRow();">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                Add New
+                            </a>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody id="empList">
+                    @{int i = 0; }
+                    @foreach (var emp in Model.EmployeeList)
+                    {
+                        i++;
+                        <tr>
+                            <td><label class="label label-info">@i</label></td>
+                            <td><input type="text" id="EmployeeList_Name_01" class="form-control" placeholder="Name" name="Name" value="@emp.Name"></td>
+                            <td><input type="text" class="form-control" placeholder="Position" name="Position" value=@emp.Position></td>
+                            <td><input type="text" class="form-control" placeholder="Phone" name="Phone" value="@emp.Phone"></td>
+                            <td><input type="text" class="form-control" placeholder="Email" name="Email" value="@emp.Email"></td>
+                            <td>
+                                <input type="hidden" value="@emp.EmployeeID" />
+                                <a class="btn btn-link">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script type="text/javascript">
+
+    //=================================Employee Detail======================
+    function AddEmpRow() {
+        alert("Adding a new Employee");
+    }
+    //=================================end of Employee Detail======================
+    
+    //=================================SAVE Company======================
+    var saveUrl = '@Url.Action("Create", "Company", new { area=""})';
+    function saveOrder(data) {
+        return $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url: saveUrl,
+            data: data
+        });
+    }
+
+    $("#saveCompany").click(function (e) {
+        e.preventDefault();
+
+        var empArr = [];
+        empArr.length = 0;
+
+        $.each($("#detailsTable tbody tr"), function () {
+            empArr.push({
+                //Name: $(this).find('td:eq(1)').html(),
+                Name: $(this).find('td:eq(1) input').val(),
+                //Position: $(this).find('td:eq(2)').html(),
+                Position: $(this).find('td:eq(2) input').val(),
+                //Phone: $(this).find('td:eq(3)').html(),
+                //Email: $(this).find('td:eq(4)').html()
+            });
+        });
+
+        var data = JSON.stringify({
+            ID: 0,
+            Name: $("#Name").val(),
+            Address: $("#Address").val(),
+            EmployeeList: empArr
+        });
+
+        $.when(saveOrder(data)).then(function (response) {
+            console.log(response);
+        }).fail(function (err) {
+            console.log(err);
+        });
+    });
+    //=================================end of SAVE Company======================
+</script>
