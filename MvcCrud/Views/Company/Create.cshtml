@@ -120,12 +120,11 @@
 
         $.each($("#detailsTable tbody tr"), function () {
             empArr.push({
-                //Name: $(this).find('td:eq(1)').html(),
+                //Name: $(this).find('td:eq(1)').html(), // when value is within td tags
                 Name: $(this).find('td:eq(1) input').val(),
-                //Position: $(this).find('td:eq(2)').html(),
                 Position: $(this).find('td:eq(2) input').val(),
-                //Phone: $(this).find('td:eq(3)').html(),
-                //Email: $(this).find('td:eq(4)').html()
+                Phone: $(this).find('td:eq(3) input').val(),
+                Email: $(this).find('td:eq(4) input').val()
             });
         });
 
