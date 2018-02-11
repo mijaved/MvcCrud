@@ -35,7 +35,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 @*<input type="submit" value="Create" class="btn btn-default" />*@
-                <button id="saveCompany" type="button" class="btn btn-primary">Save</button>
+                <button id="SaveCompany" type="button" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
@@ -56,7 +56,7 @@
                 <tfoot>
                     <tr>
                         <td colspan="5">
-                            <a class="btn btn-default" onclick="AddEmpRow();">
+                            <a class="btn btn-default" id="AddEmployee">
                                 <span class="glyphicon glyphicon-plus"></span>
                                 Add New
                             </a>
@@ -70,13 +70,13 @@
                         i++;
                         <tr>
                             <td><label class="label label-info">@i</label></td>
-                            <td><input type="text" id="EmployeeList_Name_01" class="form-control" placeholder="Name" name="Name" value="@emp.Name"></td>
+                            <td><input type="text" class="form-control" placeholder="Name" name="Name" value="@emp.Name"></td>
                             <td><input type="text" class="form-control" placeholder="Position" name="Position" value=@emp.Position></td>
                             <td><input type="text" class="form-control" placeholder="Phone" name="Phone" value="@emp.Phone"></td>
                             <td><input type="text" class="form-control" placeholder="Email" name="Email" value="@emp.Email"></td>
                             <td>
                                 <input type="hidden" value="@emp.EmployeeID" />
-                                <a class="btn btn-link">
+                                <a class="btn btn-link clsDeleteEmployee">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </a>
                             </td>
@@ -95,9 +95,40 @@
 <script type="text/javascript">
 
     //=================================Employee Detail======================
+    $("#AddEmployee").click(function (e) {
+        e.preventDefault();
+        AddEmpRow();
+    });
     function AddEmpRow() {
-        alert("Adding a new Employee");
+        //alert("Adding a new Employee");
+        var rowCount = $('#detailsTable tbody tr').length + 1;
+        var tr =
+        `<tr>
+            <td><label class="label label-info">`+rowCount+`</label></td>
+            <td><input type="text" class="form-control" placeholder="Name" name="Name" value=""></td>
+            <td><input type="text" class="form-control" placeholder="Position" name="Position" value=""></td>
+            <td><input type="text" class="form-control" placeholder="Phone" name="Phone" value=""></td>
+            <td><input type="text" class="form-control" placeholder="Email" name="Email" value=""></td>
+            <td>
+                <input type="hidden" value="" />
+                <a class="btn btn-link clsDeleteEmployee">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+            </td>
+        </tr>`;
+
+        $("#detailsTable tbody").append(tr);
     }
+
+    //event handler dynamic element
+    $('#detailsTable tbody').on('click', 'a.clsDeleteEmployee', function () {
+        var empID = $(this).closest('td').find('input').val();
+
+        if (confirm('Delete Emp ID ' + empID + '?')) {
+            $(this).closest('tr').remove();
+        }
+    });
+
     //=================================end of Employee Detail======================
     
     //=================================SAVE Company======================
@@ -112,12 +143,13 @@
         });
     }
 
-    $("#saveCompany").click(function (e) {
+    $("#SaveCompany").click(function (e) {
         e.preventDefault();
 
         var empArr = [];
         empArr.length = 0;
 
+        //loops thru each row of emp detail table to create empArray
         $.each($("#detailsTable tbody tr"), function () {
             empArr.push({
                 //Name: $(this).find('td:eq(1)').html(), // when value is within td tags
