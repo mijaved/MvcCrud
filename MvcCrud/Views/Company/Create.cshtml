@@ -50,6 +50,8 @@
                         <th>Position</th>
                         <th>Phone</th>
                         <th>Email</th>
+                        <th>DoB</th>
+                        <th>Active?</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -73,7 +75,9 @@
                             <td><input type="text" class="form-control" placeholder="Name" name="Name" value="@emp.Name"></td>
                             <td><input type="text" class="form-control" placeholder="Position" name="Position" value=@emp.Position></td>
                             <td><input type="text" class="form-control" placeholder="Phone" name="Phone" value="@emp.Phone"></td>
-                            <td><input type="text" class="form-control" placeholder="Email" name="Email" value="@emp.Email"></td>
+                            <td><input type="email" class="form-control" placeholder="Email" name="Email" value="@emp.Email"></td>
+                            <td><input type="date" class="form-control date" placeholder="Date of Birth" name="DateOfBirth" value='@(emp.DateOfBirth.ToString("yyyy-MM-dd"))'></td>
+                            <td><input type="checkbox" class="form-control" placeholder="IsAtive" name="IsAtive" @(emp.IsAtive ? "checked" : "") ></td>
                             <td>
                                 <input type="hidden" value="@emp.EmployeeID" />
                                 <a class="btn btn-link clsDeleteEmployee">
@@ -108,7 +112,9 @@
             <td><input type="text" class="form-control" placeholder="Name" name="Name" value=""></td>
             <td><input type="text" class="form-control" placeholder="Position" name="Position" value=""></td>
             <td><input type="text" class="form-control" placeholder="Phone" name="Phone" value=""></td>
-            <td><input type="text" class="form-control" placeholder="Email" name="Email" value=""></td>
+            <td><input type="email" class="form-control" placeholder="Email" name="Email" value=""></td>
+            <td><input type="date" class="form-control" placeholder="Date of Birth" name="DateOfBirth" value=""></td>
+            <td><input type="checkbox" class="form-control" placeholder="IsAtive" name="IsAtive" checked></td>
             <td>
                 <input type="hidden" value="" />
                 <a class="btn btn-link clsDeleteEmployee">
@@ -156,7 +162,9 @@
                 Name: $(this).find('td:eq(1) input').val(),
                 Position: $(this).find('td:eq(2) input').val(),
                 Phone: $(this).find('td:eq(3) input').val(),
-                Email: $(this).find('td:eq(4) input').val()
+                Email: $(this).find('td:eq(4) input').val(),
+                DateOfBirth: $(this).find('td:eq(5) input').val(),
+                IsAtive: $(this).find('td:eq(6) input').is(":checked")
             });
         });
 

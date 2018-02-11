@@ -12,6 +12,8 @@ namespace MvcCrud.Models
         public string Position { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public bool IsAtive { get; set; }
         public int CompanyID { get; set; }
 
         public List<Employee> GetEmployees()
@@ -27,7 +29,9 @@ namespace MvcCrud.Models
                     Name = "Name " + i.ToString(),
                     Email = "Email " + i.ToString(),
                     Phone = "Phone " + i.ToString(),
-                    Position = "Position " + i.ToString()
+                    Position = "Position " + i.ToString(),
+                    DateOfBirth = DateTime.Now.AddYears(-(20+i)),
+                    IsAtive = (i%2==0?true:false)
                 };
 
                 empList.Add(emp);
