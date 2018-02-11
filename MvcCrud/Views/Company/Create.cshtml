@@ -27,10 +27,20 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
             </div>
         </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TypeId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("TypeId", Model.ddlTypeList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -50,6 +60,7 @@
                         <th>Position</th>
                         <th>Phone</th>
                         <th>Email</th>
+                        <th>Gender</th>
                         <th>DoB</th>
                         <th>Active?</th>
                         <th></th>
@@ -76,7 +87,11 @@
                             <td><input type="text" class="form-control" placeholder="Position" name="Position" value=@emp.Position></td>
                             <td><input type="text" class="form-control" placeholder="Phone" name="Phone" value="@emp.Phone"></td>
                             <td><input type="email" class="form-control" placeholder="Email" name="Email" value="@emp.Email"></td>
+                            <td>
+                                @Html.DropDownList("Gender", new SelectList(Enum.GetValues(typeof(MvcCrud.Models.Gender))), "Select Gender", new { @class = "form-control" })
+                            </td>
                             <td><input type="date" class="form-control date" placeholder="Date of Birth" name="DateOfBirth" value='@(emp.DateOfBirth.ToString("yyyy-MM-dd"))'></td>
+                            
                             <td><input type="checkbox" class="form-control" placeholder="IsAtive" name="IsAtive" @(emp.IsAtive ? "checked" : "") ></td>
                             <td>
                                 <input type="hidden" value="@emp.EmployeeID" />
@@ -113,6 +128,7 @@
             <td><input type="text" class="form-control" placeholder="Position" name="Position" value=""></td>
             <td><input type="text" class="form-control" placeholder="Phone" name="Phone" value=""></td>
             <td><input type="email" class="form-control" placeholder="Email" name="Email" value=""></td>
+            <td><select class="form-control valid" name="Gender" aria-invalid="false"><option value="0">Select Gender</option><option value="1">Male</option><option value="2">Female</option></select></td>
             <td><input type="date" class="form-control" placeholder="Date of Birth" name="DateOfBirth" value=""></td>
             <td><input type="checkbox" class="form-control" placeholder="IsAtive" name="IsAtive" checked></td>
             <td>
@@ -163,14 +179,18 @@
                 Position: $(this).find('td:eq(2) input').val(),
                 Phone: $(this).find('td:eq(3) input').val(),
                 Email: $(this).find('td:eq(4) input').val(),
-                DateOfBirth: $(this).find('td:eq(5) input').val(),
-                IsAtive: $(this).find('td:eq(6) input').is(":checked")
+                Gender: $(this).find('td:eq(5) select').val(),
+                GenderName: $(this).find('td:eq(5) select :selected').text(),
+                DateOfBirth: $(this).find('td:eq(6) input').val(),
+                IsAtive: $(this).find('td:eq(7) input').is(":checked")
             });
         });
 
         var data = JSON.stringify({
             ID: 0,
             Name: $("#Name").val(),
+            TypeId: $("#TypeId").val(),
+            TypeName: $('#TypeId :selected').text(),
             Address: $("#Address").val(),
             EmployeeList: empArr
         });

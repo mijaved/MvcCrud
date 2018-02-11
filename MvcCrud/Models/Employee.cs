@@ -8,13 +8,15 @@ namespace MvcCrud.Models
     public class Employee
     {
         public int EmployeeID { get; set; }
+        public int CompanyID { get; set; }
         public string Name { get; set; }
         public string Position { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public DateTime DateOfBirth { get; set; }
         public bool IsAtive { get; set; }
-        public int CompanyID { get; set; }
+        public Gender Gender { get; set; }
+        public string GenderName { get; set; }
 
         public List<Employee> GetEmployees()
         {
@@ -38,5 +40,11 @@ namespace MvcCrud.Models
             }
             return empList;
         }
+    }
+
+    public enum Gender
+    {
+        Male = 1,
+        Female = 2
     }
 }
